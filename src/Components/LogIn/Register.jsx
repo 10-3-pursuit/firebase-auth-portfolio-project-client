@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-import { auth, db } from "../helpers/firebase";
+import { auth, db } from "../../helpers/firebase";
 
 function Register() {
   const [newUser, setNewUser] = useState({
