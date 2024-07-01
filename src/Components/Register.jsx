@@ -1,78 +1,79 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { setDoc, doc } from 'firebase/firestore'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
-import { auth, db } from '../helpers/firebase'
+import { auth, db } from "../helpers/firebase";
 
 function Register() {
   const [newUser, setNewUser] = useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-  })
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+  });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setNewUser({ ...newUser, [e.target.id]: e.target.value })
-  }
+    setNewUser({ ...newUser, [e.target.id]: e.target.value });
+  };
 
   const handleRegister = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      const { email, password } = newUser
+      const { email, password } = newUser;
 
       // createUser in firebase
-      await createUserWithEmailAndPassword(auth, email, password)
-      const { currentUser } = auth
+      await createUserWithEmailAndPassword(auth, email, password);
+      const { currentUser } = auth;
 
       // store user in the Firestore DB
       if (currentUser.uid) {
-        const { email, firstName, lastName, password } = newUser
-        await setDoc(doc(db, 'Users', currentUser.uid), {
+        const { email, firstName, lastName, password } = newUser;
+        await setDoc(doc(db, "Users", currentUser.uid), {
           email,
           firstName,
           lastName,
-          photo: '',
-        })
-        console.log(auth, email, password)
+          photo: "",
+        });
+        console.log(auth, email, password);
 
         //Login
-        await signInWithEmailAndPassword(auth, email, password)
+        await signInWithEmailAndPassword(auth, email, password);
       }
-      console.log('User Registered Successfully!!')
+      console.log("User Registered Successfully!!");
       setNewUser({
         email,
         firstName,
         lastName,
-        photo: '',
-      })
+        photo: "",
+      });
 
       //Display success alert
-      toast.success('User Registered Successfully!!', {
-        position: 'top-center',
-      })
+      toast.success("User Registered Successfully!!", {
+        position: "top-center",
+      });
 
-      navigate('/profile')
+      // change this to wherever we want the user to navigate to after sign up/ sign in
+      navigate("/profile");
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
 
       toast.error(error.message, {
-        position: 'bottom-center',
-      })
+        position: "bottom-center",
+      });
     }
-  }
+  };
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div style={{ textAlign: "center" }}>
       <form onSubmit={handleRegister}>
         <h3>Sign Up</h3>
         <div>
           <label htmlFor="firstName">
-            First Name:{' '}
+            First Name:{" "}
             <input
               type="text"
               id="firstName"
@@ -85,7 +86,7 @@ function Register() {
           </label>
 
           <label htmlFor="lastName">
-            Last Name:{' '}
+            Last Name:{" "}
             <input
               type="text"
               id="lastName"
@@ -97,7 +98,7 @@ function Register() {
           </label>
 
           <label htmlFor="email">
-            Email Address:{' '}
+            Email Address:{" "}
             <input
               type="email"
               id="email"
@@ -110,7 +111,7 @@ function Register() {
           </label>
 
           <label htmlFor="password">
-            Password:{' '}
+            Password:{" "}
             <input
               type="password"
               placeholder="Enter password"
@@ -131,7 +132,7 @@ function Register() {
         </p>
       </form>
     </div>
-  )
+  );
 }
 
-export default Register
+export default Register;
