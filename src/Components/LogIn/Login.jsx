@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 
-import SignInWithGoogle from './SignInWithGoogle'
-import { auth } from '../helpers/firebase'
+import SignInWithGoogle from '../SignInWithGoogle'
+import { auth } from '../../helpers/firebase'
 
 function Login() {
   const navigate = useNavigate()
